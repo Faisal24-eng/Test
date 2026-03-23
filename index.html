@@ -1,0 +1,1287 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nexus Trading Terminal</title>
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="styles/variables.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="popup-container">
+    <!-- Header -->
+    <header class="header">
+      <div class="header-left">
+        <div class="logo">
+          <span class="logo-icon">◇</span>
+          <span class="logo-text">NEXUS</span>
+        </div>
+        <span class="version">v1.0.1</span>
+      </div>
+      <div class="header-right">
+        <div class="time-display" id="timeDisplay">
+          <span class="time-label">System Time</span>
+          <span class="time-value" id="systemTime">--:--:--</span>
+        </div>
+        <div class="status-indicator" id="statusIndicator">
+          <span class="status-dot"></span>
+          <span class="status-text">Idle</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Control Panel -->
+    <section class="control-panel">
+      <div class="control-buttons">
+        <button class="btn btn-start" id="btnStart">
+          <span class="btn-icon">▶</span>
+          <span>Start</span>
+        </button>
+        <button class="btn btn-stop" id="btnStop" disabled>
+          <span class="btn-icon">■</span>
+          <span>Stop</span>
+        </button>
+      </div>
+      <div class="control-info">
+        <div class="info-item">
+          <span class="info-label">Last Update</span>
+          <span class="info-value" id="lastUpdate">--</span>
+        </div>
+        <div class="info-item">
+          <span class="info-label">Position</span>
+          <span class="info-value position-none" id="currentPosition">None</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tabs -->
+    <nav class="tabs">
+      <button class="tab active" data-tab="dataCenter">Data Center</button>
+      <button class="tab" data-tab="indicators">Indicators</button>
+      <button class="tab" data-tab="execution">Execution</button>
+      <button class="tab" data-tab="backtest">Backtest</button>
+      <button class="tab" data-tab="settings">Settings</button>
+    </nav>
+
+    <!-- Tab Content -->
+    <main class="tab-content">
+      <!-- Data Center Tab -->
+      <section class="tab-pane active" id="tabDataCenter">
+        <h3 class="section-title">Data Center Configuration</h3>
+
+        <!-- Market 1 OHLCV -->
+        <div class="config-card">
+          <div class="config-card-header">
+            <h4>Market 1 - OHLCV</h4>
+            <span class="status-badge" id="market1OhlcvStatus">Idle</span>
+          </div>
+          <div class="config-grid">
+            <div class="form-group">
+              <label>Symbol</label>
+              <input title="m1OhlcvSymbol" type="text" id="m1OhlcvSymbol" class="input" value="BTCUSDT" placeholder="e.g. BTCUSDT, ETHUSDT">
+            </div>
+            <div class="form-group">
+              <label>Market Type</label>
+              <select title="m1OhlcvMarketType" id="m1OhlcvMarketType" class="input">
+                <option value="perpetual">Perpetual</option>
+                <option value="spot">Spot</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Interval</label>
+              <select title="m1OhlcvInterval" id="m1OhlcvInterval" class="input">
+                <option value="1m">1 Minute</option>
+                <option value="3m">3 Minutes</option>
+                <option value="5m">5 Minutes</option>
+                <option value="15m">15 Minutes</option>
+                <option value="30m">30 Minutes</option>
+                <option value="1h">1 Hour</option>
+                <option value="2h">2 Hours</option>
+                <option value="4h">4 Hours</option>
+                <option value="6h">6 Hours</option>
+                <option value="12h">12 Hours</option>
+                <option value="1d">1 Day</option>
+                <option value="1w">1 Week</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Quantity</label>
+              <input placeholder=" " title="m1OhlcvQuantity" type="number" id="m1OhlcvQuantity" class="input" value="500" min="100" max="1500">
+            </div>
+            <div class="form-group">
+              <label>Fetch Interval (ms)</label>
+              <input placeholder=" " title="m1OhlcvFetchInterval" type="number" id="m1OhlcvFetchInterval" class="input" value="1000" min="500" max="60000">
+            </div>
+          </div>
+          <div class="latest-data">
+            <span class="data-label">Latest:</span>
+            <span class="data-value" id="m1OhlcvLatest">--</span>
+          </div>
+        </div>
+
+        <!-- Market 1 Order Book -->
+        <div class="config-card">
+          <div class="config-card-header">
+            <h4>Market 1 - Order Book</h4>
+            <span class="status-badge" id="market1ObStatus">Idle</span>
+          </div>
+          <div class="config-grid">
+            <div class="form-group">
+              <label>Symbol</label>
+              <input title="m1ObSymbol" type="text" id="m1ObSymbol" class="input" value="BTCUSDT" placeholder="e.g. BTCUSDT, ETHUSDT">
+            </div>
+            <div class="form-group">
+              <label>Market Type</label>
+              <select title="m1ObMarketType" id="m1ObMarketType" class="input">
+                <option value="perpetual">Perpetual</option>
+                <option value="spot">Spot</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Depth</label>
+              <input placeholder=" " title="m1ObDepth" type="number" id="m1ObDepth" class="input" value="100" min="5" max="1000">
+            </div>
+            <div class="form-group">
+              <label>Fetch Interval (ms)</label>
+              <input placeholder=" " title="m1ObFetchInterval" type="number" id="m1ObFetchInterval" class="input" value="10000" min="1000" max="120000">
+            </div>
+            <div class="form-group">
+              <label>Price Aggregation</label>
+              <select title="m1ObAggregation" id="m1ObAggregation" class="input">
+                <option value="0">None (Raw)</option>
+                <option value="0.1">$0.1</option>
+                <option value="1">$1</option>
+                <option value="10" selected>$10</option>
+                <option value="100">$100</option>
+              </select>
+            </div>
+          </div>
+          <div class="latest-data">
+            <span class="data-label">Bid/Ask:</span>
+            <span class="data-value" id="m1ObLatest">--</span>
+          </div>
+        </div>
+
+        <!-- Market 2 OHLCV -->
+        <div class="config-card">
+          <div class="config-card-header">
+            <h4>Market 2 - OHLCV</h4>
+            <span class="status-badge" id="market2OhlcvStatus">Idle</span>
+          </div>
+          <div class="config-grid">
+            <div class="form-group">
+              <label>Symbol</label>
+              <input title="m2OhlcvSymbol" type="text" id="m2OhlcvSymbol" class="input" value="SOLUSDT" placeholder="e.g. BTCUSDT, ETHUSDT">
+            </div>
+            <div class="form-group">
+              <label>Market Type</label>
+              <select title="m2OhlcvMarketType" id="m2OhlcvMarketType" class="input">
+                <option value="perpetual">Perpetual</option>
+                <option value="spot">Spot</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Interval</label>
+              <select title="m2OhlcvInterval" id="m2OhlcvInterval" class="input">
+                <option value="1m">1 Minute</option>
+                <option value="3m">3 Minutes</option>
+                <option value="5m">5 Minutes</option>
+                <option value="15m">15 Minutes</option>
+                <option value="30m">30 Minutes</option>
+                <option value="1h">1 Hour</option>
+                <option value="2h">2 Hours</option>
+                <option value="4h">4 Hours</option>
+                <option value="6h">6 Hours</option>
+                <option value="12h">12 Hours</option>
+                <option value="1d">1 Day</option>
+                <option value="1w">1 Week</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Quantity</label>
+              <input placeholder=" " title="m2OhlcvQuantity" type="number" id="m2OhlcvQuantity" class="input" value="500" min="100" max="1500">
+            </div>
+            <div class="form-group">
+              <label>Fetch Interval (ms)</label>
+              <input placeholder=" " title="m2OhlcvFetchInterval" type="number" id="m2OhlcvFetchInterval" class="input" value="1000" min="500" max="60000">
+            </div>
+          </div>
+          <div class="latest-data">
+            <span class="data-label">Latest:</span>
+            <span class="data-value" id="m2OhlcvLatest">--</span>
+          </div>
+        </div>
+
+        <!-- Market 2 Order Book -->
+        <div class="config-card">
+          <div class="config-card-header">
+            <h4>Market 2 - Order Book</h4>
+            <span class="status-badge" id="market2ObStatus">Idle</span>
+          </div>
+          <div class="config-grid">
+            <div class="form-group">
+              <label>Symbol</label>
+              <input title="m2ObSymbol" type="text" id="m2ObSymbol" class="input" value="SOLUSDT" placeholder="e.g. BTCUSDT, ETHUSDT">
+            </div>
+            <div class="form-group">
+              <label>Market Type</label>
+              <select title="m2ObMarketType" id="m2ObMarketType" class="input">
+                <option value="perpetual">Perpetual</option>
+                <option value="spot">Spot</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Depth</label>
+              <input placeholder=" " title="m2ObDepth" type="number" id="m2ObDepth" class="input" value="100" min="5" max="1000">
+            </div>
+            <div class="form-group">
+              <label>Fetch Interval (ms)</label>
+              <input placeholder=" " title="m2ObFetchInterval" type="number" id="m2ObFetchInterval" class="input" value="10000" min="1000" max="120000">
+            </div>
+            <div class="form-group">
+              <label>Price Aggregation</label>
+              <select title="m2ObAggregation" id="m2ObAggregation" class="input">
+                <option value="0">None (Raw)</option>
+                <option value="0.1">$0.1</option>
+                <option value="1" selected>$1</option>
+                <option value="10">$10</option>
+                <option value="100">$100</option>
+              </select>
+            </div>
+          </div>
+          <div class="latest-data">
+            <span class="data-label">Bid/Ask:</span>
+            <span class="data-value" id="m2ObLatest">--</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Indicators Tab -->
+      <section class="tab-pane" id="tabIndicators">
+        <h3 class="section-title">Indicators & Strategies</h3>
+
+        <!-- Slow Supertrend -->
+        <div class="indicator-card">
+          <div class="indicator-header" data-accordion="slowSupertrend">
+            <div class="indicator-info">
+              <h4>Slow Supertrend</h4>
+              <span class="indicator-status" id="slowSupertrendStatus">OFF</span>
+            </div>
+            <span class="accordion-icon">▼</span>
+          </div>
+          <div class="indicator-content" id="slowSupertrendContent">
+            <div class="mode-selector">
+              <label class="radio-label">
+                <input title="Checkbox" type="radio" name="slowSupertrendMode" value="off" checked>
+                <span>OFF</span>
+              </label>
+              <label class="radio-label">
+                <input title="Checkbox" type="radio" name="slowSupertrendMode" value="primary">
+                <span>Primary</span>
+              </label>
+              <label class="radio-label">
+                <input title="Checkbox" type="radio" name="slowSupertrendMode" value="secondary">
+                <span>Secondary</span>
+              </label>
+              <label class="checkbox-label position-protection">
+                <input title="slowSupertrendProtection" type="checkbox" id="slowSupertrendProtection">
+                <span>Position Protection</span>
+              </label>
+            </div>
+            <div class="config-grid">
+              <div class="form-group">
+                <label>Market</label>
+                <select title="slowSupertrendMarket" id="slowSupertrendMarket" class="input">
+                  <option value="1">Market 1</option>
+                  <option value="2">Market 2</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Timeframe (min)</label>
+                <input placeholder=" " title="slowSupertrendTimeframe" type="number" id="slowSupertrendTimeframe" class="input" value="1" min="1" max="60">
+              </div>
+              <div class="form-group">
+                <label>TF Adjustment (ms)</label>
+                <input placeholder=" " title="slowSupertrendTfAdjust" type="number" id="slowSupertrendTfAdjust" class="input" value="100" min="0" max="5000">
+              </div>
+              <div class="form-group">
+                <label>ATR Period</label>
+                <input placeholder=" " title="slowSupertrendAtrPeriod" type="number" id="slowSupertrendAtrPeriod" class="input" value="7" min="1" max="50">
+              </div>
+              <div class="form-group">
+                <label>Multiplier</label>
+                <input placeholder=" " title="slowSupertrendMultiplier" type="number" id="slowSupertrendMultiplier" class="input" value="2" min="0.1" max="10"
+                  step="0.1">
+              </div>
+              <div class="form-group">
+                <label>Source</label>
+                <select title="slowSupertrendSource" id="slowSupertrendSource" class="input">
+                  <option value="close">Close</option>
+                  <option value="hl2">HL2</option>
+                  <option value="hlc3">HLC3</option>
+                  <option value="ohlc4">OHLC4</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Alignment Comp. (ms)</label>
+                <input placeholder=" " title="slowSupertrendAlignment" type="number" id="slowSupertrendAlignment" class="input" value="0" min="0" max="10000">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Fast Supertrend -->
+        <div class="indicator-card">
+          <div class="indicator-header" data-accordion="fastSupertrend">
+            <div class="indicator-info">
+              <h4>Fast Supertrend</h4>
+              <span class="indicator-status" id="fastSupertrendStatus">OFF</span>
+            </div>
+            <span class="accordion-icon">▼</span>
+          </div>
+          <div class="indicator-content" id="fastSupertrendContent">
+            <div class="mode-selector">
+              <label class="radio-label">
+                <input title="Checkbox" type="radio" name="fastSupertrendMode" value="off" checked>
+                <span>OFF</span>
+              </label>
+              <label class="radio-label">
+                <input title="Checkbox" type="radio" name="fastSupertrendMode" value="primary">
+                <span>Primary</span>
+              </label>
+              <label class="radio-label">
+                <input title="Checkbox" type="radio" name="fastSupertrendMode" value="secondary">
+                <span>Secondary</span>
+              </label>
+              <label class="checkbox-label position-protection">
+                <input title="fastSupertrendProtection" type="checkbox" id="fastSupertrendProtection">
+                <span>Position Protection</span>
+              </label>
+            </div>
+            <div class="config-grid">
+              <div class="form-group">
+                <label>Market</label>
+                <select title="fastSupertrendMarket" id="fastSupertrendMarket" class="input">
+                  <option value="1">Market 1</option>
+                  <option value="2">Market 2</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Timeframe (min)</label>
+                <input placeholder=" " title="fastSupertrendTimeframe" type="number" id="fastSupertrendTimeframe" class="input" value="1" min="1" max="60">
+              </div>
+              <div class="form-group">
+                <label>TF Adjustment (ms)</label>
+                <input placeholder=" " title="fastSupertrendTfAdjust" type="number" id="fastSupertrendTfAdjust" class="input" value="100" min="0" max="5000">
+              </div>
+              <div class="form-group">
+                <label>ATR Period</label>
+                <input placeholder=" " title="fastSupertrendAtrPeriod" type="number" id="fastSupertrendAtrPeriod" class="input" value="7" min="1" max="50">
+              </div>
+              <div class="form-group">
+                <label>Multiplier</label>
+                <input placeholder=" " title="fastSupertrendMultiplier" type="number" id="fastSupertrendMultiplier" class="input" value="2" min="0.1" max="10"
+                  step="0.1">
+              </div>
+              <div class="form-group">
+                <label>Source</label>
+                <select title="fastSupertrendSource" id="fastSupertrendSource" class="input">
+                  <option value="close">Close</option>
+                  <option value="hl2">HL2</option>
+                  <option value="hlc3">HLC3</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Alignment Comp. (ms)</label>
+                <input placeholder=" " title="fastSupertrendAlignment" type="number" id="fastSupertrendAlignment" class="input" value="0" min="0" max="10000">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Cross Market Supertrend -->
+        <div class="indicator-card">
+          <div class="indicator-header" data-accordion="crossSupertrend">
+            <div class="indicator-info">
+              <h4>Cross Market Supertrend</h4>
+              <span class="indicator-status" id="crossSupertrendStatus">OFF</span>
+            </div>
+            <span class="accordion-icon">▼</span>
+          </div>
+          <div class="indicator-content" id="crossSupertrendContent">
+            <div class="mode-selector">
+              <label class="radio-label">
+                <input title="Checkbox" type="radio" name="crossSupertrendMode" value="off" checked>
+                <span>OFF</span>
+              </label>
+              <label class="radio-label">
+                <input title="Checkbox" type="radio" name="crossSupertrendMode" value="primary">
+                <span>Primary</span>
+              </label>
+              <label class="radio-label">
+                <input title="Checkbox" type="radio" name="crossSupertrendMode" value="secondary">
+                <span>Secondary</span>
+              </label>
+              <label class="checkbox-label position-protection">
+                <input title="crossSupertrendProtection" type="checkbox" id="crossSupertrendProtection">
+                <span>Position Protection</span>
+              </label>
+            </div>
+            <div class="config-grid">
+              <div class="form-group">
+                <label>Market</label>
+                <select title="crossSupertrendMarket" id="crossSupertrendMarket" class="input">
+                  <option value="1">Market 1</option>
+                  <option value="2">Market 2</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Timeframe (min)</label>
+                <input placeholder=" " title="crossSupertrendTimeframe" type="number" id="crossSupertrendTimeframe" class="input" value="1" min="1" max="60">
+              </div>
+              <div class="form-group">
+                <label>TF Adjustment (ms)</label>
+                <input placeholder=" " title="crossSupertrendTfAdjust" type="number" id="crossSupertrendTfAdjust" class="input" value="100" min="0" max="5000">
+              </div>
+              <div class="form-group">
+                <label>ATR Period</label>
+                <input placeholder=" " title="crossSupertrendAtrPeriod" type="number" id="crossSupertrendAtrPeriod" class="input" value="7" min="1" max="50">
+              </div>
+              <div class="form-group">
+                <label>Multiplier</label>
+                <input placeholder=" " title="crossSupertrendMultiplier" type="number" id="crossSupertrendMultiplier" class="input" value="2" min="0.1" max="10"
+                  step="0.1">
+              </div>
+              <div class="form-group">
+                <label>Source</label>
+                <select title="crossSupertrendSource" id="crossSupertrendSource" class="input">
+                  <option value="close">Close</option>
+                  <option value="hl2">HL2</option>
+                  <option value="hlc3">HLC3</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Alignment Comp. (ms)</label>
+                <input placeholder=" " title="crossSupertrendAlignment" type="number" id="crossSupertrendAlignment" class="input" value="0" min="0" max="10000">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 200 EMA -->
+        <div class="indicator-card">
+          <div class="indicator-header" data-accordion="ema200">
+            <div class="indicator-info">
+              <h4>200 EMA</h4>
+              <span class="indicator-status" id="ema200Status">OFF</span>
+            </div>
+            <span class="accordion-icon">▼</span>
+          </div>
+          <div class="indicator-content" id="ema200Content">
+            <div class="mode-selector">
+              <label class="radio-label">
+                <input title="Checkbox" type="radio" name="ema200Mode" value="off" checked>
+                <span>OFF</span>
+              </label>
+              <label class="radio-label">
+                <input title="Checkbox" type="radio" name="ema200Mode" value="secondary">
+                <span>Secondary</span>
+              </label>
+              <label class="checkbox-label position-protection">
+                <input title="ema200Protection" type="checkbox" id="ema200Protection">
+                <span>Position Protection</span>
+              </label>
+            </div>
+            <div class="config-grid">
+              <div class="form-group">
+                <label>Market</label>
+                <select title="ema200Market" id="ema200Market" class="input">
+                  <option value="1">Market 1</option>
+                  <option value="2">Market 2</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Timeframe (min)</label>
+                <input placeholder=" " title="ema200Timeframe" type="number" id="ema200Timeframe" class="input" value="1" min="1" max="60">
+              </div>
+              <div class="form-group">
+                <label>TF Adjustment (ms)</label>
+                <input placeholder=" " title="ema200TfAdjust" type="number" id="ema200TfAdjust" class="input" value="100" min="0" max="5000">
+              </div>
+              <div class="form-group">
+                <label>Length</label>
+                <input placeholder=" " title="ema200Length" type="number" id="ema200Length" class="input" value="200" min="10" max="500">
+              </div>
+              <div class="form-group">
+                <label>Source</label>
+                <select title="ema200Source" id="ema200Source" class="input">
+                  <option value="close">Close</option>
+                  <option value="hl2">HL2</option>
+                  <option value="hlc3">HLC3</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- RSI -->
+        <div class="indicator-card">
+          <div class="indicator-header" data-accordion="rsi">
+            <div class="indicator-info">
+              <h4>RSI</h4>
+              <span class="indicator-status" id="rsiStatus">OFF</span>
+            </div>
+            <span class="accordion-icon">▼</span>
+          </div>
+          <div class="indicator-content" id="rsiContent">
+            <div class="mode-selector">
+              <label class="radio-label">
+                <input title="Checkbox" type="radio" name="rsiMode" value="off" checked>
+                <span>OFF</span>
+              </label>
+              <label class="radio-label">
+                <input title="Checkbox" type="radio" name="rsiMode" value="primary">
+                <span>Primary</span>
+              </label>
+              <label class="radio-label">
+                <input title="Checkbox" type="radio" name="rsiMode" value="secondary">
+                <span>Secondary</span>
+              </label>
+              <label class="checkbox-label position-protection">
+                <input title="rsiProtection" type="checkbox" id="rsiProtection">
+                <span>Position Protection</span>
+              </label>
+            </div>
+            <div class="config-grid">
+              <div class="form-group">
+                <label>Market</label>
+                <select title="rsiMarket" id="rsiMarket" class="input">
+                  <option value="1">Market 1</option>
+                  <option value="2">Market 2</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Timeframe (min)</label>
+                <input placeholder=" " title="rsiTimeframe" type="number" id="rsiTimeframe" class="input" value="1" min="1" max="60">
+              </div>
+              <div class="form-group">
+                <label>TF Adjustment (ms)</label>
+                <input placeholder=" " title="rsiTfAdjust" type="number" id="rsiTfAdjust" class="input" value="100" min="0" max="5000">
+              </div>
+              <div class="form-group">
+                <label>Length</label>
+                <input placeholder=" " title="rsiLength" type="number" id="rsiLength" class="input" value="14" min="2" max="50">
+              </div>
+              <div class="form-group">
+                <label>Overbought</label>
+                <input placeholder=" " title="rsiOverbought" type="number" id="rsiOverbought" class="input" value="70" min="50" max="100">
+              </div>
+              <div class="form-group">
+                <label>Oversold</label>
+                <input placeholder=" " title="rsiOversold" type="number" id="rsiOversold" class="input" value="30" min="0" max="50">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Order Book -->
+        <div class="indicator-card">
+          <div class="indicator-header" data-accordion="orderBook">
+            <div class="indicator-info">
+              <h4>Order Book</h4>
+              <span class="indicator-status" id="orderBookStatus">OFF</span>
+            </div>
+            <span class="accordion-icon">▼</span>
+          </div>
+          <div class="indicator-content" id="orderBookContent">
+            <div class="mode-selector">
+              <label class="radio-label">
+                <input title="Checkbox" type="radio" name="orderBookMode" value="off" checked>
+                <span>OFF</span>
+              </label>
+              <label class="radio-label">
+                <input title="Checkbox" type="radio" name="orderBookMode" value="primary">
+                <span>Primary</span>
+              </label>
+              <label class="radio-label">
+                <input title="Checkbox" type="radio" name="orderBookMode" value="secondary">
+                <span>Secondary</span>
+              </label>
+              <label class="checkbox-label position-protection">
+                <input title="orderBookProtection" type="checkbox" id="orderBookProtection">
+                <span>Position Protection</span>
+              </label>
+            </div>
+            <div class="config-grid">
+              <div class="form-group">
+                <label>Market</label>
+                <select title="orderBookMarket" id="orderBookMarket" class="input">
+                  <option value="1">Market 1</option>
+                  <option value="2">Market 2</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Timeframe (sec)</label>
+                <input placeholder=" " title="orderBookTimeframe" type="number" id="orderBookTimeframe" class="input" value="1" min="1" max="60">
+              </div>
+              <div class="form-group">
+                <label>Depth Levels</label>
+                <input placeholder=" " title="orderBookDepth" type="number" id="orderBookDepth" class="input" value="50" min="5" max="500">
+              </div>
+              <div class="form-group">
+                <label>Imbalance Threshold (%)</label>
+                <input placeholder=" " title="orderBookImbalance" type="number" id="orderBookImbalance" class="input" value="60" min="50" max="90">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ADX -->
+        <div class="indicator-card">
+          <div class="indicator-header" data-accordion="adx">
+            <div class="indicator-info">
+              <h4>ADX</h4>
+              <span class="indicator-status" id="adxStatus">OFF</span>
+            </div>
+            <span class="accordion-icon">▼</span>
+          </div>
+          <div class="indicator-content" id="adxContent">
+            <div class="mode-selector">
+              <label class="radio-label">
+                <input title="Checkbox" type="radio" name="adxMode" value="off" checked>
+                <span>OFF</span>
+              </label>
+              <label class="radio-label">
+                <input title="Checkbox" type="radio" name="adxMode" value="secondary">
+                <span>Secondary</span>
+              </label>
+              <label class="checkbox-label position-protection">
+                <input title="adxProtection" type="checkbox" id="adxProtection">
+                <span>Position Protection</span>
+              </label>
+            </div>
+            <div class="config-grid">
+              <div class="form-group">
+                <label>Market</label>
+                <select title="adxMarket" id="adxMarket" class="input">
+                  <option value="1">Market 1</option>
+                  <option value="2">Market 2</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Timeframe (min)</label>
+                <input placeholder=" " title="adxTimeframe" type="number" id="adxTimeframe" class="input" value="1" min="1" max="60">
+              </div>
+              <div class="form-group">
+                <label>TF Adjustment (ms)</label>
+                <input placeholder=" " title="adxTfAdjust" type="number" id="adxTfAdjust" class="input" value="100" min="0" max="5000">
+              </div>
+              <div class="form-group">
+                <label>Length</label>
+                <input placeholder=" " title="adxLength" type="number" id="adxLength" class="input" value="14" min="5" max="50">
+              </div>
+              <div class="form-group">
+                <label>Secondary Setpoint</label>
+                <input placeholder=" " title="adxSetpoint" type="number" id="adxSetpoint" class="input" value="20" min="10" max="50">
+              </div>
+              <div class="form-group">
+                <label>Protection Threshold</label>
+                <input placeholder=" " title="adxThreshold" type="number" id="adxThreshold" class="input" value="30" min="20" max="60">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- VWAP -->
+        <div class="indicator-card">
+          <div class="indicator-header" data-accordion="vwap">
+            <div class="indicator-info">
+              <h4>VWAP</h4>
+              <span class="indicator-status" id="vwapStatus">OFF</span>
+            </div>
+            <span class="accordion-icon">▼</span>
+          </div>
+          <div class="indicator-content" id="vwapContent">
+            <div class="mode-selector">
+              <label class="radio-label">
+                <input title="Checkbox" type="radio" name="vwapMode" value="off" checked>
+                <span>OFF</span>
+              </label>
+              <label class="radio-label">
+                <input title="Checkbox" type="radio" name="vwapMode" value="primary">
+                <span>Primary</span>
+              </label>
+              <label class="radio-label">
+                <input title="Checkbox" type="radio" name="vwapMode" value="secondary">
+                <span>Secondary</span>
+              </label>
+              <label class="checkbox-label position-protection">
+                <input title="vwapProtection" type="checkbox" id="vwapProtection">
+                <span>Position Protection</span>
+              </label>
+            </div>
+            <div class="config-grid">
+              <div class="form-group">
+                <label>Market</label>
+                <select title="vwapMarket" id="vwapMarket" class="input">
+                  <option value="1">Market 1</option>
+                  <option value="2">Market 2</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Timeframe (min)</label>
+                <input placeholder=" " title="vwapTimeframe" type="number" id="vwapTimeframe" class="input" value="1" min="1" max="60">
+              </div>
+              <div class="form-group">
+                <label>TF Adjustment (ms)</label>
+                <input placeholder=" " title="vwapTfAdjust" type="number" id="vwapTfAdjust" class="input" value="100" min="0" max="5000">
+              </div>
+              <div class="form-group">
+                <label>Anchor</label>
+                <select title="vwapAnchor" id="vwapAnchor" class="input">
+                  <option value="session">Session</option>
+                  <option value="day">Day</option>
+                  <option value="week">Week</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Source</label>
+                <select title="vwapSource" id="vwapSource" class="input">
+                  <option value="typical">Typical (HLC/3)</option>
+                  <option value="close">Close</option>
+                  <option value="hl2">HL2</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Volume -->
+        <div class="indicator-card">
+          <div class="indicator-header" data-accordion="volume">
+            <div class="indicator-info">
+              <h4>Volume</h4>
+              <span class="indicator-status" id="volumeStatus">OFF</span>
+            </div>
+            <span class="accordion-icon">▼</span>
+          </div>
+          <div class="indicator-content" id="volumeContent">
+            <div class="mode-selector">
+              <label class="radio-label">
+                <input title="Checkbox" type="radio" name="volumeMode" value="off" checked>
+                <span>OFF</span>
+              </label>
+              <label class="radio-label">
+                <input title="Checkbox" type="radio" name="volumeMode" value="secondary">
+                <span>Secondary</span>
+              </label>
+              <label class="checkbox-label position-protection">
+                <input title="volumeProtection" type="checkbox" id="volumeProtection">
+                <span>Position Protection</span>
+              </label>
+            </div>
+            <div class="config-grid">
+              <div class="form-group">
+                <label>Market</label>
+                <select title="volumeMarket" id="volumeMarket" class="input">
+                  <option value="1">Market 1</option>
+                  <option value="2">Market 2</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Timeframe (min)</label>
+                <input placeholder=" " title="volumeTimeframe" type="number" id="volumeTimeframe" class="input" value="1" min="1" max="60">
+              </div>
+              <div class="form-group">
+                <label>TF Adjustment (ms)</label>
+                <input placeholder=" " title="volumeTfAdjust" type="number" id="volumeTfAdjust" class="input" value="100" min="0" max="5000">
+              </div>
+              <div class="form-group">
+                <label>MA Length</label>
+                <input placeholder=" " title="volumeMaLength" type="number" id="volumeMaLength" class="input" value="20" min="5" max="100">
+              </div>
+              <div class="form-group">
+                <label>Confirm. Mult. (×MA)</label>
+                <input placeholder=" " title="volumeConfirmMult" type="number" id="volumeConfirmMult" class="input" value="1.0" min="0.5" max="3" step="0.1">
+              </div>
+              <div class="form-group">
+                <label>Against Mult. (×MA)</label>
+                <input placeholder=" " title="volumeAgainstMult" type="number" id="volumeAgainstMult" class="input" value="1.5" min="1" max="5" step="0.1">
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Execution Tab -->
+      <section class="tab-pane" id="tabExecution">
+        <h3 class="section-title">Order Execution</h3>
+
+        <div class="config-card">
+          <div class="config-card-header">
+            <h4>MEXC Connection</h4>
+            <span class="status-badge" id="mexcStatus">Not Connected</span>
+          </div>
+          <button class="btn btn-secondary" id="btnTestMexc">
+            Test MEXC Page
+          </button>
+          <p class="hint" id="mexcHint">Open MEXC futures in another tab, then test connection.</p>
+        </div>
+
+        <div class="config-card">
+          <div class="config-card-header">
+            <h4>Order Parameters</h4>
+          </div>
+          <div class="config-grid">
+            <div class="form-group">
+              <label>Order Size (Amount)</label>
+              <input placeholder=" " title="orderAmount" type="number" id="orderAmount" class="input" value="5" min="0.1" max="1000" step="0.1">
+            </div>
+            <div class="form-group">
+              <label>Trail Amount</label>
+              <input placeholder=" " title="trailAmount" type="number" id="trailAmount" class="input" value="0.3" min="0.01" max="10" step="0.01">
+            </div>
+          </div>
+        </div>
+
+        <div class="config-card">
+          <div class="config-card-header">
+            <h4>Manual Controls</h4>
+          </div>
+          <div class="manual-buttons">
+            <button class="btn btn-long" id="btnManualLong">
+              Execute Long
+            </button>
+            <button class="btn btn-short" id="btnManualShort">
+              Execute Short
+            </button>
+            <button class="btn btn-close" id="btnManualClose">
+              Close Position
+            </button>
+          </div>
+        </div>
+
+        <!-- Trade History -->
+        <div class="config-card">
+          <div class="config-card-header">
+            <h4>Trade History</h4>
+            <span class="status-badge" id="tradeHistoryCount">0 trades</span>
+          </div>
+          <div class="trade-history-container" id="tradeHistoryContainer">
+            <table class="trade-history-table">
+              <thead>
+                <tr>
+                  <th>Time</th>
+                  <th>Type</th>
+                  <th>Entry</th>
+                  <th>Exit</th>
+                  <th>P&L</th>
+                </tr>
+              </thead>
+              <tbody id="tradeHistoryBody">
+                <tr class="no-trades">
+                  <td colspan="5">No trades yet</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <button class="btn btn-secondary" id="btnClearHistory" style="margin-top: 8px;">
+            Clear History
+          </button>
+        </div>
+      </section>
+
+
+      <!-- Backtest Tab -->
+      <section class="tab-pane" id="tabBacktest">
+        <h3 class="section-title">Backtesting</h3>
+
+        <div class="config-card">
+          <div class="config-card-header">
+            <h4>Data Settings</h4>
+          </div>
+          <div class="backtest-info">
+            <p class="hint" style="margin-bottom: 8px;">
+              <strong>Using Data Center configuration:</strong>
+            </p>
+            <div class="backtest-markets">
+              <div class="backtest-market-info">
+                <span class="data-label">Market 1:</span>
+                <span class="data-value" id="backtestMarket1Info">--</span>
+              </div>
+              <div class="backtest-market-info">
+                <span class="data-label">Market 2:</span>
+                <span class="data-value" id="backtestMarket2Info">--</span>
+              </div>
+            </div>
+          </div>
+          <div class="config-grid" style="margin-top: 12px;">
+            <div class="form-group">
+              <label>Start Date</label>
+              <input placeholder=" " title="backtestStart" type="datetime-local" id="backtestStart" class="input">
+            </div>
+            <div class="form-group">
+              <label>End Date</label>
+              <input placeholder=" " title="backtestEnd" type="datetime-local" id="backtestEnd" class="input">
+            </div>
+            <div class="form-group">
+              <label>Order Amount (USDT)</label>
+              <input placeholder=" " title="backtestOrderAmount" type="number" id="backtestOrderAmount" class="input" value="100" min="1" max="10000" step="1">
+            </div>
+            <div class="form-group">
+              <label>Initial Balance (USDT)</label>
+              <input placeholder=" " title="backtestInitialBalance" type="number" id="backtestInitialBalance" class="input" value="10000" min="100" max="1000000"
+                step="100">
+            </div>
+            <div class="form-group">
+              <label>Trading Fee (%)</label>
+              <input placeholder=" " title="backtestFeePercent" type="number" id="backtestFeePercent" class="input" value="0.04" min="0" max="1" step="0.01">
+            </div>
+            <div class="form-group">
+              <label>Execute Trades On</label>
+              <select title="backtestExecutionMarket" id="backtestExecutionMarket" class="input">
+                <option value="1">Market 1</option>
+                <option value="2">Market 2</option>
+              </select>
+            </div>
+          </div>
+          <p class="hint">Uses current indicator settings. Order Book indicator will be disabled (no historical data).
+          </p>
+        </div>
+
+        <div class="backtest-controls">
+          <button class="btn btn-primary" id="btnRunBacktest">
+            Run Backtest
+          </button>
+          <button class="btn btn-secondary" id="btnStopBacktest" disabled>
+            Stop
+          </button>
+        </div>
+
+        <div class="progress-container" id="backtestProgress" style="display: none;">
+          <div class="progress-bar">
+            <div class="progress-fill" id="backtestProgressFill"></div>
+          </div>
+          <span class="progress-text" id="backtestProgressText">0%</span>
+        </div>
+
+        <div class="backtest-results" id="backtestResults" style="display: none;">
+          <h4>Results</h4>
+          <div class="results-grid">
+            <div class="result-item">
+              <span class="result-label">Total Trades</span>
+              <span class="result-value" id="resultTrades">0</span>
+            </div>
+            <div class="result-item">
+              <span class="result-label">Win Rate</span>
+              <span class="result-value" id="resultWinRate">0%</span>
+            </div>
+            <div class="result-item">
+              <span class="result-label">Profit Factor</span>
+              <span class="result-value" id="resultPF">0</span>
+            </div>
+            <div class="result-item">
+              <span class="result-label">Total PnL</span>
+              <span class="result-value" id="resultPnL">$0</span>
+            </div>
+            <div class="result-item">
+              <span class="result-label">Max Drawdown</span>
+              <span class="result-value" id="resultDrawdown">0%</span>
+            </div>
+            <div class="result-item">
+              <span class="result-label">Avg Win</span>
+              <span class="result-value" id="resultAvgWin">$0</span>
+            </div>
+            <div class="result-item">
+              <span class="result-label">Avg Loss</span>
+              <span class="result-value" id="resultAvgLoss">$0</span>
+            </div>
+            <div class="result-item">
+              <span class="result-label">Long/Short</span>
+              <span class="result-value" id="resultLongShort">0/0</span>
+            </div>
+          </div>
+          <button class="btn btn-secondary" id="btnExportCSV">
+            Export Trades CSV
+          </button>
+        </div>
+      </section>
+
+      <!-- Settings Tab -->
+      <section class="tab-pane" id="tabSettings">
+        <h3 class="section-title">Settings</h3>
+
+        <div class="config-card">
+          <div class="config-card-header">
+            <h4>Time Synchronization</h4>
+          </div>
+          <div class="config-grid">
+            <div class="form-group">
+              <label>Time Offset (ms)</label>
+              <input placeholder=" " title="timeOffset" type="number" id="timeOffset" class="input" value="0" min="-60000" max="60000">
+            </div>
+          </div>
+          <p class="hint">Adjust system time offset if your clock is out of sync.</p>
+          <button class="btn btn-secondary" id="btnSyncTime">
+            Sync with System
+          </button>
+        </div>
+
+        <div class="config-card">
+          <div class="config-card-header">
+            <h4>Reset</h4>
+          </div>
+          <button class="btn btn-danger" id="btnResetConfig">
+            Reset All Settings
+          </button>
+          <p class="hint">This will reset all configurations to default values.</p>
+        </div>
+        <hr style="margin: 20px 0; border: 0; border-top: 1px solid var(--border-muted);">
+        <h3 class="section-title">MEXC DOM Selectors (Advanced)</h3>
+        <p class="settings-warning" style="color: #ff4d4f; font-size: 0.9em; margin-bottom: 15px;">⚠️ Changing these
+          values may break execution.</p>
+
+        <div class="settings-container"
+          style="max-height: 400px; overflow-y: auto; padding-right: 10px; padding-bottom: 20px;">
+
+          <!-- Section 1: Long Order -->
+          <div class="settings-group">
+            <h4>1. Long Order Execution</h4>
+            <div class="form-group">
+              <label>Flash Close</label>
+              <input placeholder=" " title="Input" type="text" class="xpath-input" data-key="flashClose">
+            </div>
+            <div class="form-group">
+              <label>Modal Close Icon (SVG)</label>
+              <input placeholder=" " title="Input" type="text" class="xpath-input" data-key="modalClose">
+            </div>
+            <div class="form-group">
+              <label>Order Amount Input</label>
+              <input placeholder=" " title="Input" type="text" class="xpath-input" data-key="orderInput">
+            </div>
+            <div class="form-group">
+              <label>Open Long Button</label>
+              <input placeholder=" " title="Input" type="text" class="xpath-input" data-key="longBtn">
+            </div>
+            <div class="form-group">
+              <label>Tab: Open Orders</label>
+              <input placeholder=" " title="Input" type="text" class="xpath-input" data-key="openOrdersTab">
+            </div>
+            <div class="form-group">
+              <label>Open Orders (1)</label>
+              <input placeholder=" " title="Input" type="text" class="xpath-input" data-key="openOrders1">
+            </div>
+            <div class="form-group">
+              <label>Open Orders (2)</label>
+              <input placeholder=" " title="Input" type="text" class="xpath-input" data-key="openOrders2">
+            </div>
+            <div class="form-group">
+              <label>Cancel All</label>
+              <input placeholder=" " title="Input" type="text" class="xpath-input" data-key="cancelAll">
+            </div>
+            <div class="form-group">
+              <label>Confirm (Modal)</label>
+              <input placeholder=" " title="Input" type="text" class="xpath-input" data-key="confirmBtn">
+            </div>
+            <div class="form-group">
+              <label>Confirm (Primary)</label>
+              <input placeholder=" " title="Input" type="text" class="xpath-input" data-key="confirmBtnPrimary">
+            </div>
+            <div class="form-group">
+              <label>Tab: Open Position</label>
+              <input placeholder=" " title="Input" type="text" class="xpath-input" data-key="positionsTab">
+            </div>
+            <div class="form-group">
+              <label>Positions (1)</label>
+              <input placeholder=" " title="Input" type="text" class="xpath-input" data-key="positions1">
+            </div>
+            <div class="form-group">
+              <label>Positions (2)</label>
+              <input placeholder=" " title="Input" type="text" class="xpath-input" data-key="positions2">
+            </div>
+            <div class="form-group">
+              <label>TP/SL Trail Amount</label>
+              <input placeholder=" " title="Input" type="text" class="xpath-input" data-key="tpslTrailAmountInput">
+            </div>
+            <div class="form-group">
+              <label>TP/SL Amount</label>
+              <input placeholder=" " title="Input" type="text" class="xpath-input" data-key="tpslAmountInput">
+            </div>
+            <div class="form-group">
+              <label>Close Long Button</label>
+              <input placeholder=" " title="Input" type="text" class="xpath-input" data-key="closeLongBtn">
+            </div>
+          </div>
+
+          <!-- Section 2: Short Order -->
+          <div class="settings-group">
+            <h4>2. Short Order Execution</h4>
+            <div class="form-group">
+              <label>Flash Close</label>
+              <input placeholder=" " title="Input" type="text" class="xpath-input" data-key="flashClose">
+            </div>
+            <div class="form-group">
+              <label>Modal Close Icon (SVG)</label>
+              <input placeholder=" " title="Input" type="text" class="xpath-input" data-key="modalClose">
+            </div>
+            <div class="form-group">
+              <label>Order Amount Input</label>
+              <input placeholder=" " title="Input" type="text" class="xpath-input" data-key="orderInput">
+            </div>
+            <div class="form-group">
+              <label>Open Short Button</label>
+              <input placeholder=" " title="Input" type="text" class="xpath-input" data-key="shortBtn">
+            </div>
+            <div class="form-group">
+              <label>Tab: Open Orders</label>
+              <input placeholder=" " title="Input" type="text" class="xpath-input" data-key="openOrdersTab">
+            </div>
+            <div class="form-group">
+              <label>Open Orders (1)</label>
+              <input placeholder=" " title="Input" type="text" class="xpath-input" data-key="openOrders1">
+            </div>
+            <div class="form-group">
+              <label>Open Orders (2)</label>
+              <input placeholder=" " title="Input" type="text" class="xpath-input" data-key="openOrders2">
+            </div>
+            <div class="form-group">
+              <label>Cancel All</label>
+              <input placeholder=" " title="Input" type="text" class="xpath-input" data-key="cancelAll">
+            </div>
+            <div class="form-group">
+              <label>Confirm (Modal)</label>
+              <input placeholder=" " title="Input" type="text" class="xpath-input" data-key="confirmBtn">
+            </div>
+            <div class="form-group">
+              <label>Confirm (Primary)</label>
+              <input placeholder=" " title="Input" type="text" class="xpath-input" data-key="confirmBtnPrimary">
+            </div>
+            <div class="form-group">
+              <label>Tab: Open Position</label>
+              <input placeholder=" " title="Input" type="text" class="xpath-input" data-key="positionsTab">
+            </div>
+            <div class="form-group">
+              <label>Positions (1)</label>
+              <input placeholder=" " title="Input" type="text" class="xpath-input" data-key="positions1">
+            </div>
+            <div class="form-group">
+              <label>Positions (2)</label>
+              <input placeholder=" " title="Input" type="text" class="xpath-input" data-key="positions2">
+            </div>
+            <div class="form-group">
+              <label>TP/SL Trail Amount</label>
+              <input placeholder=" " title="Input" type="text" class="xpath-input" data-key="tpslTrailAmountInput">
+            </div>
+            <div class="form-group">
+              <label>TP/SL Amount</label>
+              <input placeholder=" " title="Input" type="text" class="xpath-input" data-key="tpslAmountInput">
+            </div>
+            <div class="form-group">
+              <label>Close Short Button</label>
+              <input placeholder=" " title="Input" type="text" class="xpath-input" data-key="closeShortBtn">
+            </div>
+          </div>
+
+          <!-- Section 3: Close Position -->
+          <div class="settings-group">
+            <h4>3. Close Position Execution</h4>
+            <div class="form-group">
+              <label>Tab: Open Position</label>
+              <input placeholder=" " title="Input" type="text" class="xpath-input" data-key="positionsTab">
+            </div>
+            <div class="form-group">
+              <label>Positions (1)</label>
+              <input placeholder=" " title="Input" type="text" class="xpath-input" data-key="positions1">
+            </div>
+            <div class="form-group">
+              <label>Positions (2)</label>
+              <input placeholder=" " title="Input" type="text" class="xpath-input" data-key="positions2">
+            </div>
+            <div class="form-group">
+              <label>Flash Close</label>
+              <input placeholder=" " title="Input" type="text" class="xpath-input" data-key="flashClose">
+            </div>
+            <div class="form-group">
+              <label>Modal Close Icon (SVG)</label>
+              <input placeholder=" " title="Input" type="text" class="xpath-input" data-key="modalClose">
+            </div>
+            <div class="form-group">
+              <label>Modal Close Span</label>
+              <input placeholder=" " title="Input" type="text" class="xpath-input" data-key="modalCloseSpan">
+            </div>
+            <div class="form-group">
+              <label>Tab: Open Orders</label>
+              <input placeholder=" " title="Input" type="text" class="xpath-input" data-key="openOrdersTab">
+            </div>
+            <div class="form-group">
+              <label>Open Orders (1)</label>
+              <input placeholder=" " title="Input" type="text" class="xpath-input" data-key="openOrders1">
+            </div>
+            <div class="form-group">
+              <label>Open Orders (2)</label>
+              <input placeholder=" " title="Input" type="text" class="xpath-input" data-key="openOrders2">
+            </div>
+            <div class="form-group">
+              <label>Cancel All</label>
+              <input placeholder=" " title="Input" type="text" class="xpath-input" data-key="cancelAll">
+            </div>
+            <div class="form-group">
+              <label>Confirm (Modal)</label>
+              <input placeholder=" " title="Input" type="text" class="xpath-input" data-key="confirmBtn">
+            </div>
+            <div class="form-group">
+              <label>Confirm (Primary)</label>
+              <input placeholder=" " title="Input" type="text" class="xpath-input" data-key="confirmBtnPrimary">
+            </div>
+            <div class="form-group">
+              <label>Position Row</label>
+              <input placeholder=" " title="Input" type="text" class="xpath-input" data-key="positionRow">
+            </div>
+            <div class="form-group">
+              <label>Position Count</label>
+              <input placeholder=" " title="Input" type="text" class="xpath-input" data-key="positionCount">
+            </div>
+            <div class="form-group">
+              <label>Close Long Button</label>
+              <input placeholder=" " title="Input" type="text" class="xpath-input" data-key="closeLongBtn">
+            </div>
+            <div class="form-group">
+              <label>Close Short Button</label>
+              <input placeholder=" " title="Input" type="text" class="xpath-input" data-key="closeShortBtn">
+            </div>
+          </div>
+
+        </div>
+
+        <div class="settings-actions" style="margin-top: 20px; display: flex; gap: 10px;">
+          <button id="resetXPathDefaults" class="btn btn-secondary">Reset Defaults</button>
+          <button id="saveXPathConfig" class="btn btn-primary">Save Configuration</button>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Floating Action Bar -->
+  <div class="action-bar">
+    <button class="btn btn-primary btn-save-all" id="btnSaveAll">
+      <span class="btn-icon">💾</span>
+      <span>Save All Settings</span>
+    </button>
+  </div>
+
+  <!-- Toast Notifications -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="background-engine.js" type="module"></script>
+  <script src="app.js" type="module"></script>
+</body>
+
+</html>
