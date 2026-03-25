@@ -761,7 +761,7 @@ class PopupController {
      */
     setDefaultBacktestDates() {
         const now = new Date();
-        const startDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000); // 7 days ago
+        const startDate = new Date(now.getTime() - 1 * 24 * 60 * 60 * 1000); // 7 days ago
 
         document.getElementById('backtestStart').value = startDate.toISOString().slice(0, 16);
         document.getElementById('backtestEnd').value = now.toISOString().slice(0, 16);
