@@ -1,0 +1,108 @@
+/* ================================================
+   NEXUS TRADING TERMINAL - CSS VARIABLES
+   ================================================ */
+
+:root {
+  /* Primary Colors */
+  --color-bg-primary: #0d1117;
+  --color-bg-secondary: #161b22;
+  --color-bg-tertiary: #21262d;
+  --color-bg-hover: #30363d;
+  
+  /* Glassmorphism */
+  --glass-bg: rgba(22, 27, 34, 0.85);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --glass-blur: blur(12px);
+  
+  /* Accent Colors */
+  --color-accent-primary: #58a6ff;
+  --color-accent-secondary: #7c3aed;
+  --color-accent-tertiary: #06b6d4;
+  
+  /* Trading Colors */
+  --color-long: #00d26a;
+  --color-long-hover: #00ff7f;
+  --color-long-bg: rgba(0, 210, 106, 0.15);
+  --color-short: #ff4757;
+  --color-short-hover: #ff6b7a;
+  --color-short-bg: rgba(255, 71, 87, 0.15);
+  
+  /* Status Colors */
+  --color-success: #2ea043;
+  --color-warning: #d29922;
+  --color-error: #f85149;
+  --color-info: #58a6ff;
+  
+  /* Text Colors */
+  --text-primary: #f0f6fc;
+  --text-secondary: #8b949e;
+  --text-muted: #6e7681;
+  --text-link: #58a6ff;
+  
+  /* Border Colors */
+  --border-default: #30363d;
+  --border-muted: #21262d;
+  --border-accent: #58a6ff;
+  
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --gradient-success: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+  --gradient-danger: linear-gradient(135deg, #eb3349 0%, #f45c43 100%);
+  --gradient-header: linear-gradient(90deg, #1a1f2e 0%, #0d1117 100%);
+  
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.5);
+  --shadow-glow-long: 0 0 20px rgba(0, 210, 106, 0.3);
+  --shadow-glow-short: 0 0 20px rgba(255, 71, 87, 0.3);
+  
+  /* Typography */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', Consolas, monospace;
+  
+  /* Spacing */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 12px;
+  --spacing-lg: 16px;
+  --spacing-xl: 24px;
+  --spacing-xxl: 32px;
+  
+  /* Border Radius */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+  --radius-full: 9999px;
+  
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-normal: 250ms ease;
+  --transition-slow: 350ms ease;
+  
+  /* Z-Index */
+  --z-dropdown: 100;
+  --z-modal: 200;
+  --z-tooltip: 300;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-bg-tertiary);
+  border-radius: var(--radius-full);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-bg-hover);
+}

@@ -1,0 +1,89 @@
+/* ================================================
+   NEXUS TRADING TERMINAL - SELF-HOSTED FONTS
+   Inter and JetBrains Mono
+   ================================================ */
+
+/* 
+ * Note: Font files should be placed in /assets/fonts/
+ * Download from:
+ * - Inter: https://rsms.me/inter/
+ * - JetBrains Mono: https://www.jetbrains.com/lp/mono/
+ *
+ * For Chrome Extensions, we use a lightweight approach with
+ * system fonts as fallback when custom fonts are not available.
+ */
+
+/* Inter - Variable weight support */
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 100 900;
+    font-display: swap;
+    src: local('Inter'),
+         url('../assets/fonts/Inter-VariableFont.woff2') format('woff2');
+}
+
+/* Inter - Static weights as fallback */
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 300;
+    font-display: swap;
+    src: local('Inter Light'),
+         url('../assets/fonts/Inter-Light.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: local('Inter Regular'),
+         url('../assets/fonts/Inter-Regular.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: local('Inter Medium'),
+         url('../assets/fonts/Inter-Medium.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: local('Inter SemiBold'),
+         url('../assets/fonts/Inter-SemiBold.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: local('Inter Bold'),
+         url('../assets/fonts/Inter-Bold.woff2') format('woff2');
+}
+
+/* JetBrains Mono for monospace */
+@font-face {
+    font-family: 'JetBrains Mono';
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: local('JetBrains Mono'),
+         url('../assets/fonts/JetBrainsMono-Regular.woff2') format('woff2');
+}
+
+@font-face {
+    font-family: 'JetBrains Mono';
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: local('JetBrains Mono Medium'),
+         url('../assets/fonts/JetBrainsMono-Medium.woff2') format('woff2');
+}
